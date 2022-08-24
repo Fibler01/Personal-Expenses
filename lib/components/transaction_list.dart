@@ -8,59 +8,65 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      /* aqui, pegando os titulos das transações os colocando na coluna */
-      children: transactions.map((tr) {
+    return Container(
+      height: 300,
+      child: ListView.builder( /* uma lista que permite scrolling, builder faz com que economize memoria nao renderizando componentes que nao estao visiveis */
+      itemCount: transactions.length,
+      itemBuilder: (ctx, index) {
+        final tr=transactions[index];
         return Card(
-          child: Row(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  /* adicionando uma boxdecoration no container */
-                  border: Border.all(
-                    color: Colors.green.shade300,
-                    width: 2,
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10,
                   ),
-                ),
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  'R\$ ${tr.value.toStringAsFixed(2)}',
-                  /* interpolando real com o valor, poderia ser feito também: 'R\$ ' + tr.value.toString() */
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.green.shade700,
+                  decoration: BoxDecoration(
+                    /* adicionando uma boxdecoration no container */
+                    border: Border.all(
+                      color: Colors.green.shade300,
+                      width: 2,
+                    ),
                   ),
-                ), /* pegando valor da transação */
-              ),
-              Column(
-                /*  mainAxisAlignment: MainAxisAlignment.center, fonte 16, peso bold, embaixo cinza */
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tr.title,
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'R\$ ${tr.value.toStringAsFixed(2)}',
+                    /* interpolando real com o valor, poderia ser feito também: 'R\$ ' + tr.value.toString() */
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 20,
+                      color: Colors.green.shade700,
                     ),
-                  ),
-                  Text(
-                    DateFormat('d MMM y').format(tr.date),
-                    /* tr.date.toString(), utilizando intl para formatar a data dia mes e ano*/
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
+                  ), /* pegando valor da transação */
+                ),
+                Column(
+                  /*  mainAxisAlignment: MainAxisAlignment.center, fonte 16, peso bold, embaixo cinza */
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tr.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      }).toList(),
+                    Text(
+                      DateFormat('d MMM y').format(tr.date),
+                      /* tr.date.toString(), utilizando intl para formatar a data dia mes e ano*/
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+
+      },
+        /* aqui, pegando os titulos das transações os colocando na coluna */
+      ),
     );
   }
 }
