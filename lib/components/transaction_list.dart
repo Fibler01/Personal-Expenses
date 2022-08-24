@@ -10,63 +10,61 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      child: ListView.builder( /* uma lista que permite scrolling, builder faz com que economize memoria nao renderizando componentes que nao estao visiveis */
-      itemCount: transactions.length,
-      itemBuilder: (ctx, index) {
-        final tr=transactions[index];
-        return Card(
-            child: Row(
+      child: transactions.isEmpty
+          ? Column(
+              /* se a lista esta vazia, mostra coluna, se não, mostra listview */
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    /* adicionando uma boxdecoration no container */
-                    border: Border.all(
-                      color: Colors.green.shade300,
-                      width: 2,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'R\$ ${tr.value.toStringAsFixed(2)}',
-                    /* interpolando real com o valor, poderia ser feito também: 'R\$ ' + tr.value.toString() */
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.green.shade700,
-                    ),
-                  ), /* pegando valor da transação */
+                Text(
+                  'Nenhuma Transacão Cadastrada!',
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-                Column(
-                  /*  mainAxisAlignment: MainAxisAlignment.center, fonte 16, peso bold, embaixo cinza */
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tr.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      DateFormat('d MMM y').format(tr.date),
-                      /* tr.date.toString(), utilizando intl para formatar a data dia mes e ano*/
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                )
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 250,
+                  child: Image.asset(
+                    'assets/images/sleeping_cat.png',
+                    fit: BoxFit.cover, /*  */
+                  ),
+                ),
               ],
+            )
+          : ListView.builder(
+              /* uma lista que permite scrolling, builder faz com que economize memoria nao renderizando componentes que nao estao visiveis */
+              itemCount: transactions.length,
+              itemBuilder: (ctx, index) {
+                final tr = transactions[index];
+                return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  child: ListTile(
+                    /* permite personalização maior em cada componente da lista */
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: FittedBox(
+                          /* para o texto se encaixar */
+                          child: Text(
+                            'R\$${tr.value}',
+                          style: Theme.of(context).textTheme.headline5,),
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      tr.title,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    subtitle: Text(
+                      DateFormat('d MMM y').format(tr.date),
+                    ),
+                  ),
+                );
+              },
+              /* aqui, pegando os titulos das transações os colocando na coluna */
             ),
-          );
-
-      },
-        /* aqui, pegando os titulos das transações os colocando na coluna */
-      ),
     );
   }
 }
