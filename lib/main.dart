@@ -11,10 +11,13 @@ import '/components/transaction_form.dart';
 main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
+ 
   final ThemeData theme = ThemeData();
 
   @override
+  
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       home: MyHomePage(),
       theme: theme.copyWith(
@@ -54,32 +57,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't0',
-      title: 'Conta Antiga',
-      value: 400.00,
-      date: DateTime.now().subtract(Duration(days: 33)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Tenis',
-      value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta',
-      value: 122211.30,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ]; /* lista de transacoes */
+  final List<Transaction> _transactions = []; /* lista de transacoes */
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -89,14 +67,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList(); /* metodo parecido com filter, onde estamos filtrando apenas as transaçoes dos ultimos 7 dias */
   }
 
-  _addTransaction(String title, double value) {
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tr) =>
+        tr.id == id); /* se o id da TR for igual o id passado como parametro, remove esse id */
+      
+    });
+  }
+
+  _addTransaction(String title, double value, DateTime date) {
     /* adicionando uma transacao, necessita do titulo e valor fornecidos pelo user */
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       /* gerar id randomicamente */
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
@@ -131,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
             /* para esticar os filhos da coluna(tipo full width) */
             children: [
               Chart(_recentTransactions),
-              TransactionList(_transactions),
+              TransactionList(_transactions, _removeTransaction),
             ]),
       ),
       floatingActionButton: FloatingActionButton(

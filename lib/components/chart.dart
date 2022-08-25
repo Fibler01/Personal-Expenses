@@ -34,7 +34,10 @@ class Chart extends StatelessWidget {
         'day': DateFormat.E().format(weekDay)[0],
         'value': totalSum,
       }; /* pegando a primeira letra do dia */
-    }); /* gerando lista de 7 elementos (pcausa dos dias na semana) */
+    })
+        .reversed
+        .toList(); /* gerando lista de 7 elementos, reversed p ir da direita p esquerda(dia atual a direita, anteriores a esquerda
+    ) (pcausa dos dias na semana) */
   }
 
   double get _weekTotalValue {
@@ -53,15 +56,17 @@ class Chart extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactions.map((tr) {
             return Flexible(
               fit: FlexFit.tight,
               child: ChartBar(
-                tr['day'] as String, /* label */
-                tr['value'] as double, /* value */
-                (tr['value'] as double) / _weekTotalValue, /* percentage, pegando o valor e dividindo pelo valor total da semana p gerar a porcentagem */ 
+                tr['day'] as String,
+                /* label */
+                tr['value'] as double,
+                /* value */
+                _weekTotalValue == 0 ? 0 :(tr['value'] as double) /  /* garantindo que não sera dividido por 0, se ele for 0 não retorna nada */
+                    _weekTotalValue, /* percentage, pegando o valor e dividindo pelo valor total da semana p gerar a porcentagem */
               ),
             );
           }).toList(),
