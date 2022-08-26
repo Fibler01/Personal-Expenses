@@ -9,6 +9,8 @@ class Chart extends StatelessWidget {
 
   final List<Transaction> recentTransaction;
 
+  
+
   List<Map<String, dynamic>> get groupedTransactions {
     return List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(
@@ -31,7 +33,7 @@ class Chart extends StatelessWidget {
       }
 
       return {
-        'day': DateFormat.E().format(weekDay)[0],
+        'day': DateFormat.E('pt_BR').format(weekDay), /* transformando dia em data do br */
         'value': totalSum,
       }; /* pegando a primeira letra do dia */
     })
@@ -62,7 +64,7 @@ class Chart extends StatelessWidget {
               fit: FlexFit.tight,
               child: ChartBar(
                 tr['day'] as String,
-                /* label */
+                /* label, dia da semana */
                 tr['value'] as double,
                 /* value */
                 _weekTotalValue == 0 ? 0 :(tr['value'] as double) /  /* garantindo que não sera dividido por 0, se ele for 0 não retorna nada */
