@@ -123,7 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLandscape = MediaQuery.of(context).orientation ==
+    final mediaQuery = MediaQuery.of(context);
+
+    bool isLandscape = mediaQuery.orientation ==
         Orientation.landscape; /* orientação paisagem */
 
     final appBar = AppBar(
@@ -145,9 +147,9 @@ class _MyHomePageState extends State<MyHomePage> {
           
         ]);
 
-    final availableHeight = MediaQuery.of(context).size.height -
+    final availableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
     /* vendo altura disponivel inicial descontando o appbar e barra de navegacao !IMPORTANT*/
     return Scaffold(
       appBar: appBar,
@@ -180,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (!_showChart || !isLandscape)
                 Container(
                   child: TransactionList(_transactions, _removeTransaction),
-                  height: availableHeight * 0.70,
+                  height: availableHeight * (isLandscape ? 1 : 0.7),
                 ), /* pegando a altura disponivel, e pegando 60% dela */
             ]),
       ),

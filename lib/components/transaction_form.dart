@@ -45,10 +45,16 @@ class TransactionForm extends StatefulWidget { /* precisa ser stateful p textedi
   }
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return SingleChildScrollView(
+      child: Card(
               elevation: 5,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.only(
+                  top: 10,
+                  right: 10,
+                  left: 10,
+                  bottom: 10 + MediaQuery.of(context).viewInsets.bottom, /* MediaQuery p descobrir tamanho do teclado */
+                ),
                 child: Column(
                   children: [
                     TextField(
@@ -107,6 +113,7 @@ class TransactionForm extends StatefulWidget { /* precisa ser stateful p textedi
                   ],
                 ),
               ),
-            );
+            ),
+    );
   }
 }

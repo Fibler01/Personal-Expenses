@@ -8,36 +8,37 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function(String) onRemove;
 
-
   @override
-  Widget build(BuildContext context) { /* contexto diz exatamente qual componente esta sendo renderizado, o contexto do filho consegue acessar o contexto pai */
-    
+  Widget build(BuildContext context) {
+    /* contexto diz exatamente qual componente esta sendo renderizado, o contexto do filho consegue acessar o contexto pai */
+
     return transactions.isEmpty
         ? LayoutBuilder(
-          builder: (ctx, constraints) {
-          return Column(
-              /* se a lista esta vazia, mostra coluna, se não, mostra listview */
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Nenhuma Transacão Cadastrada!',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: constraints.maxHeight * 0.6,
-                  child: Image.asset(
-                    'assets/images/sleeping_cat.png',
-                    fit: BoxFit.cover, /*  */
+            builder: (ctx, constraints) {
+              return Column(
+                /* se a lista esta vazia, mostra coluna, se não, mostra listview */
+                children: [
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-              ],
-            );},
-        )
+                  Text(
+                    'Nenhuma Transacão Cadastrada!',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.6,
+                    child: Image.asset(
+                      'assets/images/sleeping_cat.png',
+                      fit: BoxFit.cover, /*  */
+                    ),
+                  ),
+                ],
+              );
+            },
+          )
         : ListView.builder(
             /* uma lista que permite scrolling, builder faz com que economize memoria nao renderizando componentes que nao estao visiveis */
             itemCount: transactions.length,
@@ -69,11 +70,20 @@ class TransactionList extends StatelessWidget {
                   subtitle: Text(
                     DateFormat('d MMM y', 'pt_BR').format(tr.date),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                    onPressed: () => onRemove(tr.id),
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? TextButton.icon(
+                          onPressed: () => onRemove(tr.id),
+                          icon: Icon(Icons.delete,
+                          color: Theme.of(context).errorColor),
+                          label: Text('Excluir',
+                          style: TextStyle(color: Theme.of(context).errorColor),),
+                           
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () => onRemove(tr.id),
+                        ),
                 ),
               );
             },
