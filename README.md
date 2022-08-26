@@ -1,6 +1,6 @@
 # expenses
 
-Um aplicativo em flutter para despesas pessoais
+Um aplicativo em flutter para despesas pessoais (flutter 3.0.5)
 
 ## Getting Started
 
